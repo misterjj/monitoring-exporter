@@ -1,6 +1,6 @@
 package fr.jonathanjorand
 
-import fr.jonathanjorand.MetricsRegistry.Metrics
+import fr.jonathanjorand.YoutrackMetricsRegistry.Metrics
 import spray.json.RootJsonFormat
 
 //#json-formats

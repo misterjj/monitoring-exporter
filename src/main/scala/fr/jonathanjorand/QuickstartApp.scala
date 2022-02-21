@@ -35,7 +35,7 @@ object QuickstartApp {
 
     //#server-bootstrapping
     val rootBehavior = Behaviors.setup[Nothing] { context =>
-      val routes = new MetricsRoutes(new MetricsRegistry(new YoutrackSpi(mainConfig.youtrackConfig)))
+      val routes = new YoutrackMetricsRoutes(new YoutrackMetricsRegistry(new YoutrackSpi(mainConfig.youtrackConfig)))
       startHttpServer(routes.routes)(context.system)
 
       Behaviors.empty
