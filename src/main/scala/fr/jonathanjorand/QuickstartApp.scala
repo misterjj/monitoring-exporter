@@ -4,6 +4,7 @@ import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
+import akka.http.scaladsl.server.Directives._
 import com.typesafe.config.{Config, ConfigFactory}
 import fr.jonathanjorand.config.MainConfig
 
@@ -35,8 +36,17 @@ object QuickstartApp {
 
     //#server-bootstrapping
     val rootBehavior = Behaviors.setup[Nothing] { context =>
-      val routes = new YoutrackMetricsRoutes(new YoutrackMetricsRegistry(new YoutrackSpi(mainConfig.youtrackConfig)))
-      startHttpServer(routes.routes)(context.system)
+      val youtrackMetricsRoutes = new YoutrackRoutes(new YoutrackRegistry(new YoutrackSpi(mainConfig.youtrackConfig)))
+      val gitlabRoutes = new GitlabRoutes(new GitlabRegistry(new GitlabSpi(mainConfig.gitlabConfig)))
+
+      val routes = {
+        concat(
+          youtrackMetricsRoutes.routes,
+          gitlabRoutes.routes
+        )
+      }
+
+      startHttpServer(routes)(context.system)
 
       Behaviors.empty
     }
