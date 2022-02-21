@@ -1,4 +1,4 @@
-# youtrack-issue-exporter
+# monitoring-exporter
 
 ## run
 
@@ -6,9 +6,11 @@
 sbt run
 ```
 
-go to http://127.0.0.1:8080/metrics?q=<QUERY>
+## Youtrack
 
-## Environment variables
+go to http://127.0.0.1:8080/youtrack/metrics?q=<QUERY>
+
+### Environment variables
 
 | name           | require | description               |
 |----------------|:-------:|:--------------------------|
