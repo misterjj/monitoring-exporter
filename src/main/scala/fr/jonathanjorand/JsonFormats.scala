@@ -1,8 +1,8 @@
 package fr.jonathanjorand
 
 import fr.jonathanjorand.GitlabRegistry.Environment
-import fr.jonathanjorand.GitlabRegistry.Environments
 import fr.jonathanjorand.GitlabRegistry.LastDeployment
+import fr.jonathanjorand.GitlabRegistry.Project
 import fr.jonathanjorand.GitlabRegistry.User
 import fr.jonathanjorand.YoutrackRegistry.Metrics
 import spray.json.RootJsonFormat
@@ -19,7 +19,7 @@ object JsonFormats {
   implicit val userJsonFormat: RootJsonFormat[User] = jsonFormat2(User)
   implicit val lastDeploymentJsonFormat: RootJsonFormat[LastDeployment] = jsonFormat5(LastDeployment)
   implicit val environmentJsonFormat: RootJsonFormat[Environment] = jsonFormat4(Environment)
-  implicit val environmentsJsonFormat: RootJsonFormat[Environments] = jsonFormat1(Environments)
+  implicit val environmentsJsonFormat: RootJsonFormat[Project] = jsonFormat2(Project)
 
 }
 //#json-formats

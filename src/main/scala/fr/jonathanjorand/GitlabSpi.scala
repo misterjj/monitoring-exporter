@@ -3,6 +3,8 @@ package fr.jonathanjorand
 import cats.implicits._
 import fr.jonathanjorand.GitlabSpi.Environment
 import fr.jonathanjorand.GitlabSpi.EnvironmentFactory
+import fr.jonathanjorand.GitlabSpi.Project
+import fr.jonathanjorand.GitlabSpi.ProjectFactory
 import fr.jonathanjorand.config.GitlabConfig
 import scalaj.http._
 import spray.json.DefaultJsonProtocol._
@@ -34,9 +36,39 @@ class GitlabSpi(config: GitlabConfig) {
     val path = s"/projects/$projectId/environments"
     callApi(path).flatMap(res => EnvironmentFactory.toList(res.body).traverse(withDeployment))
   }
+
+  def getProject(projectId: String): Future[Project] = {
+
+    val path = s"/projects/$projectId"
+
+    for {
+      project <- callApi(path).map(res => ProjectFactory.toProject(res.body))
+      envs    <- getEnvironments(projectId)
+    } yield Project(
+      project.name,
+      envs
+    )
+  }
 }
 
 object GitlabSpi {
+  case class Project(
+      name: String,
+      environments: Seq[Environment]
+  )
+
+  case class ProjectJson(
+      name: String
+  )
+
+  object ProjectFactory {
+    implicit val projectFormat: RootJsonFormat[ProjectJson] = jsonFormat1(ProjectJson)
+
+    def toProject(string: String): ProjectJson = {
+      string.parseJson.convertTo[ProjectJson]
+    }
+  }
+
   case class Environment(
       id: Int,
       name: String,

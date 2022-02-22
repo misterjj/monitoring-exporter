@@ -1,20 +1,21 @@
 package fr.jonathanjorand
 
 import fr.jonathanjorand.GitlabRegistry.Environment
-import fr.jonathanjorand.GitlabRegistry.Environments
 import fr.jonathanjorand.GitlabRegistry.LastDeployment
+import fr.jonathanjorand.GitlabRegistry.Project
 import fr.jonathanjorand.GitlabRegistry.User
 
 import scala.concurrent.ExecutionContext
 import scala.concurrent.Future
 
 class GitlabRegistry(gitlabSpi: GitlabSpi)(implicit ec: ExecutionContext) {
-  def environment(query: String): Future[Environments] = {
+  def project(query: String): Future[Project] = {
     gitlabSpi
-      .getEnvironments(query)
-      .map(envs =>
-        Environments(
-          envs.map(env => {
+      .getProject(query)
+      .map(project =>
+        Project(
+          project.name,
+          project.environments.map(env => {
             Environment(
               env.id,
               env.name,
@@ -39,6 +40,11 @@ class GitlabRegistry(gitlabSpi: GitlabSpi)(implicit ec: ExecutionContext) {
 }
 
 object GitlabRegistry {
+  case class Project(
+      name: String,
+      environments: Seq[Environment]
+  )
+
   case class Environment(
       id: Int,
       name: String,
@@ -57,9 +63,5 @@ object GitlabRegistry {
   case class User(
       name: String,
       avatarUrl: String
-  )
-
-  case class Environments(
-      Environments: Seq[Environment]
   )
 }

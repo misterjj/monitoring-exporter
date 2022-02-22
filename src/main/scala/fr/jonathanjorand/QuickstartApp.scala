@@ -5,6 +5,7 @@ import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
+import ch.megard.akka.http.cors.scaladsl.CorsDirectives.cors
 import com.typesafe.config.{Config, ConfigFactory}
 import fr.jonathanjorand.config.MainConfig
 
@@ -39,7 +40,7 @@ object QuickstartApp {
       val youtrackMetricsRoutes = new YoutrackRoutes(new YoutrackRegistry(new YoutrackSpi(mainConfig.youtrackConfig)))
       val gitlabRoutes = new GitlabRoutes(new GitlabRegistry(new GitlabSpi(mainConfig.gitlabConfig)))
 
-      val routes = {
+      val routes = cors() {
         concat(
           youtrackMetricsRoutes.routes,
           gitlabRoutes.routes
