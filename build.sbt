@@ -22,6 +22,9 @@ lazy val root = (project in file(".")).settings(
     "com.typesafe.akka" %% "akka-stream" % akkaVersion,
     "org.scalaj" %% "scalaj-http" % "2.4.2",
     "io.spray" %% "spray-json" % "1.3.6",
-    "ch.qos.logback" % "logback-classic" % "1.2.3"
+    "ch.qos.logback" % "logback-classic" % "1.2.3",
+    "org.typelevel" %% "cats-core" % "2.6.1",
+    "org.typelevel" %% "cats-kernel" % "2.6.1",
+    "ch.megard" %% "akka-http-cors" % "1.1.3"
   )
 )
